@@ -46,6 +46,7 @@ public class lifeCycle {
 			//Afficher tous les avions avec "id" "programme" "phase" "type"
 			if(userChoice == 1) {
 				int counter = 0;
+				System.out.println("1 --> Liste des avions :");
 				for(String i : planes.keySet()) {
 					System.out.print( i += "");
 					counter = planes.get(i).size();
@@ -56,29 +57,29 @@ public class lifeCycle {
 				}
 			//Recherche liste d'avion à partir d'un mot clé
 			} else if(userChoice == 2) {
-				System.out.println("Quel avions rechercher vous ?");
+				System.out.println("2 --> Quel avions rechercher vous ?");
+				for(String i : planes.keySet()) System.out.println( i += " ");
 				String userPlane = scan.next();
 				int counter = 0;
 				boolean wordpresent = false;
 				for(String i : planes.keySet()) {
 					counter = planes.get(i).size();
-					if(userPlane.toLowerCase().equals(i.toLowerCase())) {
+					if(i.toLowerCase().contains(userPlane.toLowerCase())) {
 						System.out.println( i + planes.get(i) );
 						System.out.println();
 						wordpresent = true;
 					}else {
 						for(int j = 0; j < counter; j++) {	
-							if(userPlane.toLowerCase().equals(planes.get(i).get(j).toLowerCase())) {
-								System.out.print( i + planes.get(i) );
+							if(planes.get(i).get(j).toLowerCase().contains(userPlane.toLowerCase())) {
+								System.out.println( i + planes.get(i) );
 								wordpresent = true;
 							}
 						}
 					}	
 				}
 				if(wordpresent == false) {
-					System.out.println("Le mot " + userPlane + " n'est pas dans le programme!");
+					System.out.println("Le mot clé " + userPlane + " n'est pas dans la liste des nom d'avion du programme!");
 				}
-				System.out.println();
 			//Ajouter et supprimer une pièce pour un avion
 			} else if(userChoice == 3) {
 				String userPlaneChoice = "",namePartChoice,categoryPartChoice,pricePieceChoice;
@@ -94,7 +95,7 @@ public class lifeCycle {
 						for(String i : planes.keySet()) System.out.print( i += " ");
 						userPlaneChoice = scan.next();
 						for(String i : planes.keySet()) {
-							if((userPlaneChoice.toLowerCase()).equals(i.toLowerCase())) {
+							if(i.toLowerCase().contains(userPlaneChoice.toLowerCase())) {
 							planePresent = true;
 							}	
 						}
@@ -160,7 +161,39 @@ public class lifeCycle {
 				
 			//5 Afficher les infos détaillées d'un avion
 			} else if(userChoice == 4) {
-				
+				int counter = 0;
+				String userPlaneChoice = "";
+				boolean planePresent = false;
+				while(planePresent == false) {
+					System.out.println("Pour quel avion soihaitez-vous des infos détaillées ?");
+					for(String i : planes.keySet()) System.out.println( i += " ");
+					userPlaneChoice = scan.next();
+					for(String i : planes.keySet()) {
+						if(i.toLowerCase().contains(userPlaneChoice.toLowerCase())) {							
+							System.out.print( i += "");
+							planePresent = true;
+							counter = planes.get(i).size();
+							for(int j = 0; j < counter; j++) {
+								System.out.print(" - " + planes.get(i).get(j) );
+							}
+							System.out.println();
+						}	
+					}
+					for(String k : AddAirplanePart.keySet()) {
+						if(k.toLowerCase().contains(userPlaneChoice.toLowerCase())) {
+							System.out.print("      " + k );
+							counter = AddAirplanePart.get(k).size();
+							for(int l = 0; l < counter; l++) {
+								System.out.print(" - " + AddAirplanePart.get(k).get(l) );
+							}	
+							System.out.println();
+						}
+					}
+					if(planePresent == false) System.out.println("Erreur de saisie de l'avion ou l'avion ne fait pas parti du programme.");
+					System.out.println();
+						
+					
+				}
 				
 				
 			} else if(userChoice == 5) {
