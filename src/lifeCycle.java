@@ -37,6 +37,7 @@ public class lifeCycle {
 		Scanner scan = new Scanner(System.in);
 		int userChoice = 0;
 		while(userChoice != 5) {
+			System.out.println();
 			System.out.println("Bienvenue dans l'application de gestion du cycle de vie d'avions Airbus.");
 			System.out.println("Faites votre choix dans le menu, saisissez le chiffre correspondant :\n1 : Afficher tous les avions\n2 : Afficher tous les avions contenant un mot clé dans le programme. \n3 : Ajouter ou supprimer une pièce pour un avion donné\n4 : Afficher un avion avec les infos détaillées de chaque pièces\n5 : Quitter l'application");
 			while(scan.hasNextInt() == false)	scan.next();
@@ -69,7 +70,6 @@ public class lifeCycle {
 						for(int j = 0; j < counter; j++) {	
 							if(userPlane.toLowerCase().equals(planes.get(i).get(j).toLowerCase())) {
 								System.out.print( i + planes.get(i) );
-								System.out.println();
 								wordpresent = true;
 							}
 						}
@@ -84,7 +84,7 @@ public class lifeCycle {
 				String userPlaneChoice = "",namePartChoice,categoryPartChoice,pricePieceChoice;
 				boolean planePresent = false;
 				
-				System.out.println("Souttez vous \n>1 -Ajouter une pièce  \n>2 -Suppriemer une pièce");
+				System.out.println("Souttez vous :\n>1 -Ajouter une pièce  \n>2 -Suppriemer une pièce");
 				while(scan.hasNextInt() == false)	scan.next();
 				int addDelChoice = scan.nextInt();
 				//Ajout
@@ -107,7 +107,7 @@ public class lifeCycle {
 					System.out.println("Sont prix :");
 					categoryPartChoice = scan.next();
 					AddAirplanePart.put(userPlaneChoice.toUpperCase() + "-" +namePartChoice, Arrays.asList(namePartChoice,categoryPartChoice,pricePieceChoice));
-					System.out.println("La pièce a bien "+ namePartChoice +" été ajouter enbase de donnée.");	
+					System.out.println("La pièce a bien "+ namePartChoice +" été ajouter en base de donnée.");	
 				//Suppression	
 				} else if( addDelChoice == 2) {
 					while(planePresent == false) {
@@ -115,27 +115,47 @@ public class lifeCycle {
 						for(String i : planes.keySet()) System.out.print( i += " ");
 						userPlaneChoice = scan.next();
 						int counter = 0;
+						int nbPlanePart = 0;
+						ArrayList<String>resultChoice = new ArrayList<String>();
 						for(String i : AddAirplanePart.keySet()) {
 							if(i.toLowerCase().contains(userPlaneChoice.toLowerCase())) {
+								nbPlanePart++;
 								planePresent = true;
-								System.out.print( i += "");
+								resultChoice.add(i);
+								System.out.print( nbPlanePart + " --> " + i + "");
 								counter = AddAirplanePart.get(i).size();
-							for(int j = 0; j < counter; j++) {
-								System.out.print(" - " + AddAirplanePart.get(i).get(j) );
-								}	
+								for(int j = 0; j < counter; j++) {
+									System.out.print(" - " + AddAirplanePart.get(i).get(j) );
+									}
 							System.out.println();
 							}
 						}
-						if(planePresent == false) System.out.println("Cet avion n'est pas dans le programme.");
+						if(planePresent == true) {
+							int userDeleteChoice = 0; 
+							System.out.println("Quelle pièce souhaitez- vous supprimer ?   1 --> " + nbPlanePart);
+							while(scan.hasNextInt() == false)	scan.next();
+							userDeleteChoice = scan.nextInt();
+							while(userDeleteChoice < 1 || userDeleteChoice > nbPlanePart) {
+								System.out.println("Entrer un nombre entre 1 et " + nbPlanePart);
+								while(scan.hasNextInt() == false)	scan.next();
+								userDeleteChoice = scan.nextInt();
+							}
+							System.out.println("Confirmez-vous la suppresion de la pièce " + resultChoice.get(userDeleteChoice-1) + " ?  oui/non");
+							userPlaneChoice = scan.next();
+							if(userPlaneChoice.toLowerCase().equals("oui".toLowerCase()) || userPlaneChoice.toLowerCase().equals("o".toLowerCase())) {
+								AddAirplanePart.remove(resultChoice.get(userDeleteChoice-1));
+								System.out.println("La pièce " + resultChoice.get(userDeleteChoice-1) +" a bien été supprimer.");
+								System.out.println();
+							} else {
+								System.out.println("Abandon de suppresion d'une pièce.");
+							}
+						}
+						if(planePresent == false) System.out.println("Cet avion n'a pas de pièce détache ou n'est pas dans le programme.");
 					}	
 					
 				} else {
-					System.out.println("Entrez 1 pour ajouter une pièce  2 pour en suppimer une.");
+					System.out.println("Erreur, entrez 1 pour ajouter une pièce,  2 pour en suppimer une.");
 				}
-				
-				//for(String i : AddAirplanePart.keySet()) {
-				//System.out.println(i);
-				//}
 				
 				
 			//5 Afficher les infos détaillées d'un avion
@@ -152,15 +172,6 @@ public class lifeCycle {
 				
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		scan.close();
 	}
 
